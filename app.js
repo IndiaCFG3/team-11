@@ -51,17 +51,17 @@ app.use(campgroundRoutes);
 app.use(commentRoutes);
 
 
-var county= { name: "South Africa",
-  total_population: "5.78 Cr",
-  eggs_produced: "998 Ton",
-  eggs_consumption: "1142 Ton"};
-Country.create(county)
-.then(function(res){
-    console.log(res);
-})
-.catch(function(err){
-    console.log(err);
-});
+// var county= { name: "South Africa",
+//   total_population: "5.78 Cr",
+//   eggs_produced: "998 Ton",
+//   eggs_consumption: "1142 Ton"};
+// Country.create(county)
+// .then(function(res){
+//     console.log(res);
+// })
+// .catch(function(err){
+//     console.log(err);
+// });
 
 app.get("/dashboard", function(req,res){
     res.render("dashboard");
@@ -75,12 +75,26 @@ app.get("/demandmap", function(req,res){
   res.render("demandmap");
 });
 
+app.get("/about", function(req,res){
+  res.render("about");
+});
+
 app.get("/contact", function(req, res){
   res.render("contact");
 });
 
 app.get("/compare", function(req, res){
   res.render("compare");
+});
+
+app.get("/compare/ans", function(req,res){
+    Country.find({name: req.query.country1})
+      .then(function(c1){
+        Country.find({name: req.query.country2})
+          .then(function(c2){
+            res.render("compare_ans", {c1 : c1, c2: c2});
+          });
+      });
 });
 
 app.listen(3000, function(){
